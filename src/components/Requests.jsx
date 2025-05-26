@@ -40,17 +40,20 @@ const Requests = () => {
 
   if (requests === null || requests.length === 0) {
     return (
-      <div>
-        <h1 className="font-bold text-3xl text-red-500  text-center py-10">
+      <div className="flex items-center justify-center h-screen">
+        <h1 className="font-bold text-3xl text-red-500 text-center">
           No Requests Found!!!
         </h1>
       </div>
     );
   }
+
   return (
-    <div>
-      <div className="flex flex-wrap justify-center gap-6 my-10">
-        <h1 className="font-bold text-3xl text-center w-full mb-6">Requests</h1>
+    <div className="px-4 sm:px-8 md:px-16 lg:px-32 py-10 bg-gray-50 min-h-screen">
+      <h1 className="font-bold text-4xl text-center text-gray-800 mb-12">
+        User Requests
+      </h1>
+      <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
         {requests.map((request, index) => {
           const {
             _id,
@@ -62,54 +65,53 @@ const Requests = () => {
             skills,
             about,
           } = request.fromUserId;
+
           return (
             <div
               key={index}
-              className="max-w-sm flex justify-between w-2/3 items-center rounded-lg shadow-xl p-6 bg-white border border-gray-200 hover:shadow-2xl transition-all duration-300"
+              className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 p-6 flex flex-col items-center text-center"
             >
-              <div className="flex justify-center mb-4">
-                <img
-                  className="h-32 w-32 rounded-full object-cover"
-                  src={
-                    photoUrl ||
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn5aytU2bHnVPCsgfKLPxObZwFIdte5rjFGA&s"
-                  }
-                  alt="user image"
-                />
-              </div>
+              <img
+                className="h-28 w-28 rounded-full object-cover mb-4 border-4 border-indigo-200"
+                src={
+                  photoUrl ||
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn5aytU2bHnVPCsgfKLPxObZwFIdte5rjFGA&s"
+                }
+                alt="User"
+              />
 
-              <div className="text-center">
-                <h1 className="text-xl font-semibold text-gray-800">
-                  {firstName} {lastName}
-                </h1>
-                {age && <h2 className="text-gray-500">{age} years old</h2>}
-                {gender && <h2 className="text-gray-500">{gender}</h2>}
-              </div>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {firstName} {lastName}
+              </h2>
+              {age && <p className="text-gray-500">{age} years old</p>}
+              {gender && <p className="text-gray-500 capitalize">{gender}</p>}
+              {about && (
+                <p className="text-gray-600 mt-2 text-sm px-2">{about}</p>
+              )}
 
-              <div className="mt-4">
-                {about && <p className="text-gray-600 text-sm">{about}</p>}
+              {skills && (
+                <p className="text-sm text-gray-700 mt-3">
+                  <span className="font-medium text-gray-800">Skills:</span>{" "}
+                  {Array.isArray(skills)
+                    ? skills.join(", ")
+                    : skills.split(" ").join(", ")}
+                </p>
+              )}
 
-                {skills && (
-                  <p className="mt-2 text-sm text-gray-700">
-                    Skills:{" "}
-                    {Array.isArray(skills)
-                      ? skills.join(", ")
-                      : skills.split(" ").join(", ")}
-                  </p>
-                )}
+              <div className="mt-6 flex gap-4">
+                <button
+                  onClick={() => reviewRequests("rejected", request._id)}
+                  className="px-4 py-2 bg-red-100 text-red-600 font-semibold rounded-lg hover:bg-red-200 transition-all"
+                >
+                  Reject
+                </button>
+                <button
+                  onClick={() => reviewRequests("accepted", request._id)}
+                  className="px-4 py-2 bg-green-100 text-green-600 font-semibold rounded-lg hover:bg-green-200 transition-all"
+                >
+                  Accept
+                </button>
               </div>
-              <button
-                className="btn btn-primary mx-2"
-                onClick={() => reviewRequests("rejected", request._id)}
-              >
-                Reject
-              </button>
-              <button
-                className="btn btn-secondary mx-2"
-                onClick={() => reviewRequests("accepted", request._id)}
-              >
-                Accept
-              </button>
             </div>
           );
         })}
