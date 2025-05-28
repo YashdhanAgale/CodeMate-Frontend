@@ -1,10 +1,9 @@
-
-
 import axios from "axios";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnection } from "../utils/connectionSlice";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
   const dispatch = useDispatch();
@@ -37,8 +36,16 @@ const Connections = () => {
         Connections
       </h1>
       {connections.map((connection, index) => {
-        const { firstName, lastName, age, gender, photoUrl, skills, about } =
-          connection;
+        const {
+          _id,
+          firstName,
+          lastName,
+          age,
+          gender,
+          photoUrl,
+          skills,
+          about,
+        } = connection;
         return (
           <div
             key={index}
@@ -75,6 +82,9 @@ const Connections = () => {
                 </p>
               )}
             </div>
+            <Link to={"/chat/" + _id}>
+              <button className="btn btn-primary mt-2 ">Chat</button>
+            </Link>
           </div>
         );
       })}
